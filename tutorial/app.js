@@ -1,8 +1,17 @@
-// CommonJS, todo arquivo é um módulo (by default)
-// Modules - Código encapsulado (apenas compartilha o mínimo)
-const { john, peter } = require('./4-names')
-const sayHi = require('./5-utils')
+const http = require('http')
 
-sayHi('susan')
-sayHi(john)
-sayHi(peter)
+const server = http.createServer((req, res) => {
+    if(req.url === '/'){
+        res.end('Welcome to our home page')
+    }
+    if(req.url === '/about'){
+        res.end('Welcome to our about page')
+    }
+    res.end(`
+    <h1>Oops!</h1>
+    <p>Página não encontrada</p>
+    <a href="/">Home</a>
+    `)
+})
+
+server.listen(5000)
