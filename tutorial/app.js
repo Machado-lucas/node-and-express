@@ -1,13 +1,9 @@
-const { readFile, writeFile } = require('fs')
+const { createReadStream } = require('fs')
 
-console.log('started a first task')
-// CHECK FILE PATH!!!!
-readFile('./content/first.txt', 'utf8', (err, result) => {
-    if (err) {
-        console.log(err)
-        return
-    }
+const stream = createReadStream('./content/big.txt', { highWaterMark: 9000, encoding: 'utf8' })
+
+stream.on('data', (result) => {
     console.log(result)
-    console.log('completed first task')
 })
-console.log('starting next task')
+
+stream.on('error', (err) => console.log(err))
