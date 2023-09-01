@@ -1,24 +1,22 @@
 const express = require('express')
 const app = express()
-const logger = require('./logger')
-const authorize = require('./authorize')
-// req => middleware => res
-app.use()
+let { people } = require('./data')
 
-app.get('/', (req, res) => {
-    res.send('Home')
+// static assets
+app.use(express.static('./methods-public'))
+// parse from data
+app.use(express.urlencoded({ extended: false }))
+
+app.get('/api/people', (req, res) => {
+    res.status(200).json({ success: true, data: people })
 })
 
-app.get('/about', (req, res) => {
-    res.send('About')
-})
-
-app.get('/api/products', (req, res) => {
-    res.send('products')
-})
-
-app.get('/api/items', (req, res) => {
-    res.send('items')
+app.post('/login', (req, res) => {
+    const { name } = req.body
+    if(name) {
+        return res.status(200).send(`Welcome ${name}`)
+    }
+    res.status(401).send('Please provide credentials')
 })
 
 app.listen(5000, () => {
